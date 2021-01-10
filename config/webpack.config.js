@@ -1,4 +1,4 @@
-'use strict';
+
 
 const fs = require('fs');
 const path = require('path');
@@ -26,6 +26,7 @@ const ModuleNotFoundPlugin = require('react-dev-utils/ModuleNotFoundPlugin');
 const ForkTsCheckerWebpackPlugin = require('react-dev-utils/ForkTsCheckerWebpackPlugin');
 const typescriptFormatter = require('react-dev-utils/typescriptFormatter');
 const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
+const px2rem = require('postcss-px2rem')
 
 const postcssNormalize = require('postcss-normalize');
 
@@ -40,6 +41,8 @@ const webpackDevClientEntry = require.resolve(
 const reactRefreshOverlayEntry = require.resolve(
   'react-dev-utils/refreshOverlayInterop'
 );
+const lessRegex = /\.(less)$/;
+const lessModuleRegex = /\.module\.(less)$/;
 
 // Some apps do not need the benefits of saving a web request, so not inlining the chunk
 // makes for a smoother build process.
@@ -130,6 +133,7 @@ module.exports = function (webpackEnv) {
             // so that it honors browserslist config in package.json
             // which in turn let's users customize the target behavior as per their needs.
             postcssNormalize(),
+            px2rem({remUnit:37.5})
           ],
           sourceMap: isEnvProduction ? shouldUseSourceMap : isEnvDevelopment,
         },
@@ -457,6 +461,29 @@ module.exports = function (webpackEnv) {
                 inputSourceMap: shouldUseSourceMap,
               },
             },
+             {
+               test: lessRegex,
+               exclude: lessModuleRegex,
+               use: getStyleLoaders({
+                 importLoaders: 3
+               }, 'less-loader'),
+             }, {
+               test: lessModuleRegex,
+               use: getStyleLoaders({
+                   importLoaders: 3,
+                   modules: true,
+                   getLocalIdent: getCSSModuleLocalIdent,
+                   modifyVars: {
+                     'primary-color': '#1DA57A',
+                     'link-color': '#1DA57A',
+                     'border-radius-base': '2px',
+                   },
+                   javascriptEnabled: true,
+                 },
+                 'less-loader'
+               ),
+             },
+
             // "postcss" loader applies autoprefixer to our CSS.
             // "css" loader resolves paths in CSS and adds assets as dependencies.
             // "style" loader turns CSS into JS modules that inject <style> tags.
@@ -466,7 +493,7 @@ module.exports = function (webpackEnv) {
             // By default we support CSS Modules with the extension .module.css
             {
               test: cssRegex,
-              exclude: cssModuleRegex,
+              // exclude: cssModuleRegex,
               use: getStyleLoaders({
                 importLoaders: 1,
                 sourceMap: isEnvProduction

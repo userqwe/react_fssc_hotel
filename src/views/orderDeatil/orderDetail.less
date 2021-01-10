@@ -1,0 +1,243 @@
+* {
+    box-sizing: border-box;
+}
+
+.detail {
+    height: 100%;
+    overflow: hidden; // //IOS版本<11.2
+    padding-bottom: constant(safe-area-inset-bottom);
+    // //IOS版本>=11.2
+    padding-bottom: env(safe-area-inset-bottom);
+    .main-content {
+        width: 100%;
+        height: 100%;
+        // padding: 60px 0 0;
+        overflow: auto;
+    
+        &.submit {
+            padding-bottom: 55px;
+        }
+    
+        // background-color: #fff;
+        .hotel-message {
+            background: #ffffff;
+            padding: 10px;
+            box-sizing: border-box;
+            text-align: left;
+        }
+    
+        .process {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 13px;
+    
+            .process-lf {
+                display: flex;
+                align-items: center;
+                width: 70%;
+    
+                span {
+                    min-width: 46px;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                }
+            }
+        }
+    
+        .hotel-name {
+            font-size: 18px;
+            color: #191F25;
+            font-size: bold;
+        }
+    
+        .process-btn {
+            display: inline-block;
+            color: #ffffff;
+            font-size: 12px;
+            padding: 1px 5px;
+            border-radius: 4px;
+            margin-left: 10px;
+        }
+    
+        .status-0 {
+            background: linear-gradient(to right; #A392F7, #7C99FF);
+        }
+    
+        .status-1 {
+            background: linear-gradient(to right; #FFC14A, #FB9842);
+        }
+    
+        .status-2 {
+            background: linear-gradient(to right; #F5939B, #E60012);
+        }
+    
+        .status-3 {
+            background: linear-gradient(to right; #65D2FF, #13B6F6);
+        }
+    
+        .status-4 {
+            background: linear-gradient(to right; #D5D7DA, #9098A7);
+        }
+    
+        .status-5 {
+            background: linear-gradient(to right; #D5D7DA, #9098A7);
+        }
+    
+        .status-6 {
+            background: linear-gradient(to right; #06D83D, #02D9B9);
+        }
+    
+        .status-7 {
+            background: linear-gradient(to right; #D5D7DA, #9098A7);
+        }
+    
+        .status-8 {
+            background: linear-gradient(to right; #7EBFFE, #0373EC);
+        }
+    
+        .message {
+            font-size: 15px;
+            margin-bottom: 8px;
+            color: #8E8F90;
+            display: flex;
+            align-items: center;
+    
+            .blue {
+                color: rgb(146, 201, 242);
+            }
+    
+            img {
+                width: 14px;
+                height: 16px;
+                vertical-align: middle;
+                margin-right: 10px;
+            }
+    
+            span {
+                overflow: hidden;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+            }
+        }
+    
+        .border-1px:after {
+            border: 1px solid rgb(223, 110, 56);
+            border-radius: 8px;
+        }
+    
+        .operat-btn {
+            outline: none;
+            border: none;
+            height: 32px;
+            font-size: 15px;
+            color: #FB0000;
+            background: transparent;
+            padding: 0 10px;
+        }
+    
+        .approval {
+            margin-top: 15px;
+        }
+    
+        .arrpoval-table {
+            background-color: #fff;
+            // margin-top: 10px;
+            text-align: left;
+            margin-bottom: 6px;
+            position: relative;
+    
+            &::before {
+                content: '';
+                position: absolute;
+                top: 42px;
+                left: 0;
+                border-top: 1px solid #D2D5DB;
+                width: 100%;
+                height: 1px;
+                transform-origin: 0 0;
+                transform: scaleY(0.5);
+                box-sizing: border-box;
+            }
+    
+            .title {
+                height: 42px;
+                padding: 0 5vw 0 15px;
+                font-size: 15px;
+                color: #000;
+                position: relative;
+                line-height: 40px;
+                font-weight: bold;
+                box-sizing: border-box;
+            }
+    
+            .shrink-box {
+                padding: 1vw 5vw;
+            }
+            .cost-message{padding-left: 0;}
+    
+            .cost-message li {
+                overflow: hidden;
+                font-size: 14px;
+                height: 36px;
+                line-height: 36px;
+                font-size: 15px;
+    
+                .fl {
+                    float: left;
+                    color: #8E8F90;
+                }
+    
+                .fr {
+                    float: right;
+                    color: #000000;
+                }
+    
+                input {
+                    border: none;
+                    width: 280px;
+                    height: 100%;
+                    text-align: right;
+                    padding-right: 15px;
+                    box-sizing: border-box;
+                }
+    
+                position: relative;
+    
+                &0pxark::after {
+                    content: '';
+                    display: inline-block;
+                    height: 6px;
+                    width: 6px;
+                    border-width: 2px 2px 0 0;
+                    border-color: #C8C8CD;
+                    border-style: solid;
+                    transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0);
+                    position: absolute;
+                    top: 50%;
+                    margin-top: -4px;
+                    right: 5px;
+                }
+            }
+        }
+    
+    }
+    
+    .footer {
+        width: 100%;
+        position: fixed;
+        left: 0;
+        bottom: 0;
+        //IOS版本<11.2
+        padding-bottom: constant(safe-area-inset-bottom);
+        //IOS版本>=11.2
+        padding-bottom: env(safe-area-inset-bottom);
+        background-color: #fff;
+    
+        /deep/ .mint-button--danger {
+            background-image: linear-gradient(90deg, #F5939B 0%, #E60012 100%);
+            height: 54px;
+        }
+    }
+}

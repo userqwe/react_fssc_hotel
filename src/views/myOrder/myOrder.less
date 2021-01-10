@@ -1,0 +1,229 @@
+* {
+    box-sizing: border-box;
+}
+
+.myorder {
+    height: 100vh;
+    overflow: hidden;
+    padding-bottom: constant(safe-area-inset-bottom);
+    padding-bottom: env(safe-area-inset-bottom);
+    .main-content {
+        width: 100%;
+        height: calc(~'100vh - 45px');
+        // height: 100%;
+        overflow: hidden;
+        background-color: #fff;
+    
+        .list-ul {
+            // height: calc(~'100vh - 45px');
+            height: 100%;
+            overflow: hidden;
+            background: rgb(244, 244, 244);
+            padding: 0 13px;
+            -webkit-overflow-scrolling: touch;
+        }
+    
+        .list-ul-box {
+            height: 100%;
+        }
+    
+        .box {
+            position: relative;
+            overflow: hidden;
+            margin: 15px 0;
+            padding: 12px;
+            box-sizing: border-box;
+            background: #ffffff;
+            border-radius: 6px;
+            box-shadow: 0px 0px 10px #dddddd;
+    
+            .wrap {
+                overflow: hidden;
+                padding-top: 2px;
+            }
+    
+            .order-number {
+                font-size: 15px;
+                text-align: left;
+                color: #000;
+            }
+    
+            .hotel-name {
+                font-size: 15px;
+                color: #191F25;
+                padding: 5px 0;
+                text-align: left;
+                font-weight: bold;
+            }
+    
+            .hotel-address {
+                font-size: 12px;
+                color: #8E8F90;
+                margin: 8px 0;
+                overflow: hidden;
+                text-align: left;
+            }
+    
+            .process {
+                position: absolute;
+                right: 0;
+                color: #ffffff;
+                font-size: 10px;
+                width: 55px;
+                height: 22px;
+                text-align: center;
+                line-height: 22px;
+            }
+    
+            // .status-0 {
+            //     background: url(/img/status-0.png) no-repeat 0 0;
+            //     background-size: 100% 100%;
+            // }
+    
+            // .status-1 {
+            //     background: url(/img/status-1.png) no-repeat 0 0;
+            //     background-size: 100% 100%;
+            // }
+    
+            // .status-2 {
+            //     background: url(/img/status-2.png) no-repeat 0 0;
+            //     background-size: 100% 100%;
+            // }
+    
+            // .status-3 {
+            //     background: url(/img/status-3.png) no-repeat 0 0;
+            //     background-size: 100% 100%;
+            // }
+    
+            // .status-4 {
+            //     background: url(/img/status-4.png) no-repeat 0 0;
+            //     background-size: 100% 100%;
+            // }
+    
+            // .status-5 {
+            //     background: url(/img/status-4.png) no-repeat 0 0;
+            //     background-size: 100% 100%;
+            // }
+    
+            // .status-6 {
+            //     width: 67px;
+            //     background: url(/img/status-6.png) no-repeat 0 0;
+            //     background-size: 100% 100%;
+            // }
+    
+            // .status-7 {
+            //     background: url(/img/status-2.png) no-repeat 0 0;
+            //     background-size: 100% 100%;
+            // }
+    
+            // .status-8 {
+            //     background: url(/img/status-8.png) no-repeat 0 0;
+            //     background-size: 100% 100%;
+            // }
+    
+            .hotel-price {
+                font-size: 16px;
+                color: rgb(183, 69, 64);
+                font-weight: bold;
+    
+                span {
+                    font-size: 12px;
+                }
+            }
+    
+            .person-message {
+                clear: both;
+                height: 32px;
+                line-height: 32px;
+                background: rgb(248, 249, 250);
+                border-radius: 4px;
+                padding: 0 9px;
+                font-size: 12px;
+                color: #8E8F90;
+    
+                .icon-person {
+                    width: 14px;
+                    height: 16px;
+                    vertical-align: middle;
+                }
+            }
+    
+            .operat-btn {
+                outline: none;
+                border: none;
+                font-size: 14px;
+                color: #ffffff;
+                // padding: 4px 10px;
+                border-radius: 4px;
+                background: transparent;
+            }
+    
+            .refund-btn {
+                color: #FB0000;
+                margin-left: 10px;
+                font-size: 15px;
+    
+                &.border-1px:after {
+                    border: 1px solid #FB0000;
+                    border-radius: 8px;
+                }
+            }
+    
+            .again,
+            .refund {
+                display: inline-block;
+                margin-top: 1px;
+                padding-right: 2px;
+            }
+    
+            .again-btn {
+                color: #8E8F90;
+                margin-left: 10px;
+                font-size: 15px;
+                &.border-1px:after {
+                    border: 1px solid #8E8F90;
+                    border-radius: 8px;
+                }
+            }
+    
+        }
+    
+        .fl {
+            float: left;
+            text-align: left;
+        }
+    
+        .fr {
+            float: right;
+            text-align: right;
+        }
+    
+        .line {
+            margin: 8px 0;
+        }
+    
+        .count-time {
+            color: #FB9842;
+            font-size: 12px;
+    
+            .count {
+                color: #00A7F3;
+            }
+        }
+    
+        .clear {
+            clear: both;
+        }
+    
+        .detail {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            overflow: hidden;
+    
+            .left {
+                width: 88%;
+            }
+        }
+    }
+}

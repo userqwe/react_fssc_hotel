@@ -1,6 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable eqeqeq */
 import {useEffect, useMemo,useRef,useState} from 'react'
+import {createPortal} from  'react-dom'
 import { NavBar, Icon, SearchBar,ListView ,PullToRefresh} from 'antd-mobile'
 
 import service from '../../require'
@@ -19,6 +20,7 @@ export default function Resident (props){
     let [pageNo, setPageNo] = useState(1) //分页当前页数
     const [refreshing, setRefreshing] = useState(false) // 下拉刷新状态
     const pageSize = 10
+    const node = useMemo(()=>document.createElement('div'),[])
 
 
     const listRef = useRef(null) //下拉列表组件
@@ -28,6 +30,13 @@ export default function Resident (props){
     useEffect(()=>{
         if(props.model.showTree) getList()
     },[props.model.showTree])
+
+    useEffect(() => {
+        document.body.appendChild(node)
+        return () => {
+            document.body.removeChild(node)
+        }
+    }, [])
 
     const close =(e,item)=>{
         props.model.showTree =false
@@ -100,8 +109,7 @@ export default function Resident (props){
 
 
 
-    return(
-        visible?(
+    return createPortal( visible?(
             <div className="resident" v-if="value">
                 <NavBar mode="light" icon={<Icon type="left" />} onLeftClick={close}>入住人</NavBar>
                 <SearchBar placeholder="搜索" value={searchInfo} onChange={val=>searchChange(val)} onClear={()=>setSearchInfo('')} />
@@ -120,6 +128,7 @@ export default function Resident (props){
                                 pageSize={pageSize}
                                 onEndReached={onEndReached}
                                 pullToRefresh={<PullToRefresh refreshing={refreshing} onRefresh={onRefresh}/>}
+                                style={{'height':'100%'}}
                                 />
                             ):(
                                 <div className="no-data">
@@ -131,6 +140,5 @@ export default function Resident (props){
                     </div>
                 </div>
             </div>
-        ):null
-    )
+        ):null,node)
 }

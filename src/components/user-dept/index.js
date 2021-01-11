@@ -1,13 +1,24 @@
-import{useState,useMemo} from 'react'
+/* eslint-disable react-hooks/exhaustive-deps */
+import{useState,useMemo,useEffect} from 'react'
+import {createPortal} from 'react-dom'
 import './index.less'
 
 export default function UserDept (props){
     const [visible, setVisible] = useState(false)
     const [model, setModel] = useState({})
+    const node = useMemo(() => document.createElement('div'),[])
+    
     useMemo(()=>{
         setVisible(props.model.showTree)
         setModel(props.model)
     },[props.model])
+
+    useEffect(()=>{
+        document.body.appendChild(node)
+        return ()=>{
+            document.body.removeChild(node)
+        }
+    },[])
 
     // 关闭弹窗
     const closeMask = (e)=>{
@@ -25,10 +36,9 @@ export default function UserDept (props){
         closeMask(type === 'dept' && props.model.dept && !props.model.dept.edit)
     }
 
-    return(
-        visible?(
-            <div className="dialog" onClick={closeMask}>
-                <div className="dialog-container" >
+    return createPortal(visible ? (
+        <div className="dialog" onClick={closeMask}>
+            <div className="dialog-container" >
                 <div className="title">选择入住人</div>
                 <div className="department-text">
                     <div className = "text-box" onClick={(e)=>checkResident(e,'user')}>
@@ -38,8 +48,8 @@ export default function UserDept (props){
                     <div className={model.dept&&model.dept.edit?'edit':''} ><span>预算部门</span><span>{model.dept&&model.dept.nodeName}</span></div>
                     </div>
                 </div>
-                </div>
             </div>
-        ):null
-    )
+        </div>
+    ):null,node)
+
 }

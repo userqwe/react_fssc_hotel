@@ -1,4 +1,6 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import {useState,useMemo, useEffect} from 'react'
+import {createPortal}  from 'react-dom'
 import {PickerView} from 'antd-mobile'
 import './dayPicker.less'
 import {formatDate} from '../../common/filter'
@@ -8,10 +10,12 @@ export default function DayPicker (props){
     const [dataOne,setDataOne] = useState([])
     const [dataTwo,setDataTwo] = useState([])
     const [model,setModel] = useState({one:[],two:[]})
-    useMemo(()=>setVisible(props.model.visible),[props.model])
+    const node = useMemo(() => document.createElement('div'),[])
+    useMemo(() => setVisible(props.model.visible), [props.model])
     let DataThree =[{lable:'--',value:'--'}]
+    let first = true
     useEffect(()=>{
-        if(visible) {
+        if(visible&&first) {
             setDataOne(setPickerList(0, 120))
             setDataTwo(setPickerList(1, 30))
             setModel({
@@ -19,8 +23,15 @@ export default function DayPicker (props){
                 two: [formatDate(props.model.outTime)],
                 three: ['--'],
             })
+            first = false
         }
     },[props.model.visible])
+    useEffect(()=>{
+        document.body.appendChild(node)
+        return ()=>{
+           document.body.removeChild(node)
+        }
+    },[])
     // 获取前后几天
     const GetDateStr=(AddDayCount, time)=> {   
         var dd = time ? new Date(time)  : new Date()
@@ -62,9 +73,7 @@ export default function DayPicker (props){
         }
         return list
     }
-
-
-    return visible?(
+    return createPortal(visible?(
         <div className="time-picker">
             <div className="mask"></div>
             <div className="time-content">
@@ -96,17 +105,17 @@ export default function DayPicker (props){
                 </div>
                 <div className="pick-box">
                     <div className="pick pick-one">
-                        <PickerView data={dataOne} value={model.one} onChange={changeOne}/>
+                        <PickerView data={dataOne} value={model.one} cascade={false} onChange={changeOne}/>
                     </div>
                     <div className="pick pick-two">
-                        <PickerView data={DataThree} value={model.three}/>
+                        <PickerView data={DataThree} value={model.three} cascade={false}/>
                     </div>
                     <div className="pick">
-                        <PickerView data={dataTwo} value={model.two} onChange={changeTwo}/>
+                        <PickerView data={dataTwo} value={model.two} onChange={changeTwo} cascade={false}/>
                     </div>
                 </div>
             </div>
         </div>
-    ):null
+    ):null, node)
 
 }

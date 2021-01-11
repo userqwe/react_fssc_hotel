@@ -4,7 +4,7 @@
 import React, {useEffect,useState,useMemo} from 'react'
 import {useHistory,useParams} from 'react-router-dom'
 import { NavBar, Icon,Tabs, Toast, Button } from 'antd-mobile'
-import Draggable from 'react-draggable'
+// import Draggable from 'react-draggable'
 import dayjs from 'dayjs'
 import {formatDate,formatMoney}from '../../common/filter'
 
@@ -16,7 +16,7 @@ import UserDept from '../../components/user-dept/index'
 import Resdirent from '../../components/resident/index'
 import CityList from '../../components/cityList/index'
 import AgreeProtal from '../../components/agreeProtal/index'
-// import DragBtn from '../../components/drag/drag'
+import DragBtn from '../../components/drag/drag'
 import DayPicker from '../../components/dayPicker/dayPicker'
 
 import service from '../../require'
@@ -262,23 +262,27 @@ export default function Index (){
               })
               setDefaultData({...res.data})
               const {occuser,depts:dept,company,cause,project,agree,area} =res.data
-              setFormData({...formData,occuser,dept,company,cause,project,agree})
-              getLinkageReq()
-              showProtalModal(formData.agree)
               if (area && area.length) {
                 for (const item of area) {
                   if (item.open) setSelectTab(item);
                   break
                 }
               }
-              billNumber ? loadBillDetail() : apportion()
+              showProtalModal(defaultData.agree)
+              getLinkageReq()
+              if(billNumber){
+                loadBillDetail(occuser,dept,company,cause,agree)
+              }else{
+                setFormData({...formData,occuser,dept,company,cause,project,agree})
+                apportion()
+              }
               loadUserBudget()
             }
         })
    }
 
    // 获取历史订单信息
-   const loadBillDetail = async ()=> {
+   const loadBillDetail = async (occuser, dept, company, cause, agree) => {
       const result = await service.post('fssc-flight/hotel/loadBillDetail',{billNumber})
       if (result.rstCode == '0'){
         const { hotelname, hotelAddress, remarks: remark, hotelBeginTime, hotelEndTime, city, project, dayCont } = result.data
@@ -293,7 +297,7 @@ export default function Index (){
           formData.outTime = dayjs(hotelEndTime).format('YYYYMMDD')
         }
         setAgainOrder(true)
-        setFormData({ ...formData, hotelname, hotelAddress, remark, project, city: {...formData.city, ...city} })
+        setFormData({ ...formData,occuser,dept,company,cause,project,agree, hotelname, hotelAddress, remark, city: {...formData.city, ...city} })
         apportion() // 获取默认分摊
         loadUserBudget()
       }
@@ -304,9 +308,9 @@ export default function Index (){
     //  setFormData({...formData,costCenter:{},channel:{},ratio:''})
      if (!formData.company || !formData.company.nodeId || !formData.dept||!formData.dept.nodeId) return
      const data = {
-       dept: this.formData.dept.nodeId,
-       company: this.formData.company.nodeId,
-       billId: this.loadDefault.billId,
+       dept: formData.dept.nodeId,
+       company: formData.company.nodeId,
+       billId: defaultData.billId,
      }
      const result = await service.post('fssc-flight/hotel/defaultSetting',data)
      if (result.rstCode == 0) {
@@ -326,12 +330,12 @@ export default function Index (){
    const getFieldDefaultVal = async (type, itemType)=> {
      if (!formData.dept.nodeId) return
      const result = service.get('fssc-data/data/ecosystemFormTree',{params:{
-         userId: this.userInfo.loginUser.userId,
-         deptId: this.formData.dept.nodeId,
-         companyId: this.formData.company.nodeId || '',
-         billId: this.loadDefault.billId,
-         itemType,
-       }})
+        userId: formData.occuser.nodeId,
+        deptId: formData.dept.nodeId,
+        companyId: formData.company.nodeId || '',
+        billId: defaultData.billId,
+        itemType,
+      }})
      if (result.rstCode == 0) {
        const resData = result.data
        if (resData.length == 1) {
@@ -631,10 +635,10 @@ export default function Index (){
             <Button type={checkEmpty(false)?"default":"danger"} onClick={submit}>提交</Button>
           </div>
           {/* 历史订单按钮 */}
-          <div className="hist-btn">
+          {/* <div className="hist-btn">
             <Draggable><img onClick={()=>hisrory.push('/myOrder')} src='img/history-btn.png'  alt="" /></Draggable>
-            {/* <DragBtn onClick={()=>hisrory.push('/myOrder')}></DragBtn> */}
-          </div>
+          </div> */}
+            <DragBtn goNext={()=>hisrory.push('/myOrder')}></DragBtn>
           {/* //下拉树组件 */}
           <SelectTree treeModel={treeModel} />
           {/* 分摊组件 */}

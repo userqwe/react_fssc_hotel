@@ -1,13 +1,15 @@
-
+/* eslint-disable react-hooks/exhaustive-deps */
+import {useEffect} from 'react'
+import './drag.less'
 export default function Drag (props){
      let flags= false
      let position= { x: 0, y: 0 }
      let nx= ''
      let ny= ''
-     let dx= ''
-     let dy= ''
-     let xPum= ''
-     let yPum= ''
+    //  let dx= ''
+    //  let dy= ''
+    //  let xPum= ''
+    //  let yPum= ''
      let maxW = ''
      let maxH = ''
 
@@ -30,8 +32,8 @@ export default function Drag (props){
 
       position.x = touch.clientX - default_drag_comp.offsetLeft
       position.y = touch.clientY - default_drag_comp.offsetTop
-      dx = touch.clientX
-      dy = touch.clientY
+      // dx = touch.clientX
+      // dy = touch.clientY
     }
     const move=(event) =>{
       event.preventDefault()
@@ -59,6 +61,7 @@ export default function Drag (props){
         }
 
         default_drag_comp.style.left = nx + 'px'
+        console.log('nx: ', nx);
         default_drag_comp.style.top = ny + 'px'
         // 阻止页面的滑动默认事件；如果碰到滑动问题，1.2 请注意是否获取到 touchmove
         document.addEventListener(
@@ -75,13 +78,20 @@ export default function Drag (props){
       flags = false
     }
 
+    useEffect(() => {
+      const id = document.getElementById('default_drag_comp')
+      id.addEventListener('touchstart',down)
+      id.addEventListener('touchmove', move)
+      id.addEventListener('touchend',end)
+    }, [])
+
 
     return (
         <div id="default_drag_comp"
             onClick={e=>goNext(e)}
-            onTachstart={e=>down(e)}
-            onTouchmove={e=>move(e)}
-            onTouchend={e=>end(e)}
+            // onTachstart={e=>down(e)}
+            // onTouchmove={e=>move(e)}
+            // onTouchend={e=>end(e)}
         >
         <img src="/img/history-btn.png" alt=""/>
         </div>

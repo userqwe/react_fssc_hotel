@@ -63,7 +63,7 @@ function SelectTree (props,ref){
       if (item && !item.isLeaf) {
         if (item.children && item.children.length > 0 ) {
           item.open = !item.open
-          setTreeData(treeData.slice())
+          setTreeData([...treeData])
           return
         }        
       }
@@ -81,7 +81,7 @@ function SelectTree (props,ref){
           item.open =true
           if (props.treeModel.params.specialRes) item.children = result.data.list
           else item.children = result.data
-          setTreeData(treeData.slice())
+          setTreeData([...treeData])
         } else {
           let data = result.data || []
           if (props.treeModel.params.specialRes) data = result.data.list || []

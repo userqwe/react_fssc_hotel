@@ -11,7 +11,7 @@ export default function CityList (props){
     const [model,setModel] = useState({}) //弹窗模型
     const [searchInfo,setSearchInfo] = useState('') //搜索内容
     const [cityInfo,setCityInfo]= useState({}) //城市列表信息obj
-    const [stateObj, setStateObj] = useState({}) //城市列表展开合折叠
+    // const [stateObj, setStateObj] = useState({}) //城市列表展开合折叠
     useMemo(() => setModel({...model,visible:props.model.visible}), [props])
 
 
@@ -34,17 +34,8 @@ export default function CityList (props){
         closeModel(e,item)
     }
     const showItem = (e,item,index)=>{
-        // cityInfo.commonList.forEach((eleItem, eleIndex) => {
-        //     if (eleIndex !== index) item.show= false
-        // })
-        // item.show = !item.show
-        // cityInfo.show = Math.random()
-        // setCityInfo({...clone(cityInfo)})
-        for (const key in stateObj) {
-            stateObj[key] =false
-        }
-        stateObj[index]=!stateObj[index]
-        setStateObj({...stateObj})
+        item.show = !item.show
+        setCityInfo({...cityInfo})
     }
     
 
@@ -84,8 +75,8 @@ export default function CityList (props){
                             <div className="filter-city-list" >
                                 {cityInfo.commonList&&cityInfo.commonList.map((item,index)=>(
                                     <div className="city-item" key={index}>
-                                        <div className={`title ${stateObj[index]?'open':''}`}  onClick={e=>showItem(e,item,index)}>{item.firstLetter}</div>
-                                        {stateObj[index]&&(
+                                        <div className={`title ${item.show?'open':''}`}  onClick={e=>showItem(e,item,index)}>{item.firstLetter}</div>
+                                        {item.show&&(
                                             <div className="city-list">
                                                 {
                                                     item.commonList.map((itm,idx)=>(

@@ -25,11 +25,11 @@ export default function Resident (props){
 
     const listRef = useRef(null) //下拉列表组件
 
-    useMemo(() => setVisible(props.model.showTree), [props])
+    useMemo(() => setVisible(props.model.visible), [props])
 
     useEffect(()=>{
-        if(props.model.showTree) getList()
-    },[props.model.showTree])
+        if(props.model.visible) getList()
+    },[props.model.visible])
 
     useEffect(() => {
         document.body.appendChild(node)
@@ -39,7 +39,7 @@ export default function Resident (props){
     }, [])
 
     const close =(e,item)=>{
-        props.model.showTree =false
+        props.model.visible =false
         setVisible(false)
         props.model.callback(item)
     }

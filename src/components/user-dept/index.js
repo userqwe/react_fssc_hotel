@@ -9,9 +9,9 @@ export default function UserDept (props){
     const node = useMemo(() => document.createElement('div'),[])
     
     useMemo(()=>{
-        setVisible(props.model.showTree)
+        setVisible(props.model.visible)
         setModel(props.model)
-    },[props.model])
+    },[props])
 
     useEffect(()=>{
         document.body.appendChild(node)
@@ -25,6 +25,7 @@ export default function UserDept (props){
         if (e) {
             setVisible(false)
             props.model.type =null
+            props.model.visible=false
         }
         props.model.callback(props.model)
     }

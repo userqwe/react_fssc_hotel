@@ -24,7 +24,7 @@ export default function Index (){
     const hisrory = useHistory()
     const {billNumber} =useParams()
     const [defaultData, setDefaultData] = useState({}) //初始化数据对象
-    const [formData,setFormData] = useState({costCenter:{},channel:{},country:{},city:{},occuser:{},dept:{}})  //表单数据
+    const [formData,setFormData] = useState({costCenter:{},channel:{},country:{},city:{},occuser:{},dept:{},remark:''})  //表单数据
     const [compRequireList, setCompRequireList] =useState([]) //公司代码必填数组
     const [costRequireList, setCostRequireList] = useState([]) //成本中心必填
     const [selectTab, setSelectTab] = useState('')
@@ -32,7 +32,7 @@ export default function Index (){
 
     const [treeModel,setTreeModel] =useState({})  //下拉树model
     const [underTakeModel, setUnderTakeModel] = useState({}) //分摊model
-    const [userDeptModel, setUserDeptModel] = useState({}) //选择姓名部门model
+    const [userDeptModel, setUserDeptModel] = useState({visible:false}) //选择姓名部门model
     const [residentModel, setResidentModel] = useState({}) //选择入住人model
     const [cityListModel, setCityListModel] = useState({}) //选择城市model
     const [agreePropalModel, setAgreePropalModel] = useState({}) //选择城市model
@@ -100,7 +100,7 @@ export default function Index (){
               selected: {nodeId: item.nodeId, nodeName: item.nodeName},
               params: getParams(type),
               name: type,
-              showTree: true,
+              visible: true,
               treeCallback: (model) => { // 下拉回调
                 const {nodeId, nodeName, nodeCode} = model.selected
                 formData[model.name] = {...formData[model.name], nodeId, nodeName, nodeCode}
@@ -191,7 +191,7 @@ export default function Index (){
         ...formData,
         ratio: formData.ratio || 100,
         billId:defaultData.billId,
-        showTree:true,
+        visible:true,
         setChannelRequired,
         saveUnderTake,
         callback: ({channel,costCenter}) => {
@@ -223,18 +223,26 @@ export default function Index (){
       if (formData.costCenter&&formData.costCenter.nodeId && costRequireList.length && costRequireList.inclueds(formData.costCenter.nodeId)) formData.channel.required = true
     }
 
+    //设置城市是否必填
+    const setCityIsRequired = (val)=>{
+      setSelectTab(val)
+      if (val.nodeCode == "CNHOTEL") formData.city.required=true
+      else formData.city.required = false
+      setFormData({...formData})
+    }
+
     // 选择预算部门
     const chooseDept = ()=>{
       setUserDeptModel({
         dept:formData.dept,
         occuser:formData.occuser,
-        showTree:true,
+        visible:true,
         type:null,
         callback:({dept,occuser,type})=>{
           setFormData({...formData,dept,occuser})
           if (type == 'user') {
             setResidentModel({
-              showTree:true,
+              visible:true,
               callback:(item)=>{
                 if(item){
                   formData.occuser = {nodeId: item.userId, nodeName: item.userName, nodeCode: item.userCode}
@@ -264,7 +272,7 @@ export default function Index (){
               const {occuser,depts:dept,company,cause,project,agree,area} =res.data
               if (area && area.length) {
                 for (const item of area) {
-                  if (item.open) setSelectTab(item);
+                  if (item.open) setCityIsRequired(item);
                   break
                 }
               }
@@ -540,7 +548,7 @@ export default function Index (){
                   </div>
               </div>
               <div className="nav">
-                  <Tabs tabs={defaultData.area} initialPage ={selectTab.nodeId} onChange={val=>setSelectTab(val)}></Tabs>
+                  <Tabs tabs={defaultData.area} initialPage ={selectTab.nodeId} onChange={val=>setCityIsRequired(val)}></Tabs>
               </div>
               {
                 againOrder&&(

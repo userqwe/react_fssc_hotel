@@ -19,7 +19,7 @@ function Undertake (props,ref){
         open:open
     }))
     useMemo(() => {
-        setVisible(props.underTakeModel.showTree)
+        setVisible(props.underTakeModel.visible)
         setModel(props.underTakeModel)
     }, [props])
 
@@ -31,8 +31,8 @@ function Undertake (props,ref){
 
 
     const close = (e)=>{
-        // setVisible(false)
-        props.underTakeModel.showTree=false
+        setVisible(false)
+        props.underTakeModel.visible=false
         !e&&props.underTakeModel.callback(model)
     }
 
@@ -40,7 +40,7 @@ function Undertake (props,ref){
     const openTree =(item, type, itemType) =>{
             setTreeModel({
                 selected: item,
-                showTree:true,
+                visible:true,
                 params: {
                     url: 'fssc-data/data/ecosystemFormTree',
                     itemText: type,
